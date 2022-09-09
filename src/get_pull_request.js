@@ -1,7 +1,7 @@
 import axios from "axios";
 import { removeTime, errorMessage } from "./get_pull_request_helper.js";
 function getPullRequests(owner, repositoryName, startDate, endDate) {
-  const url = `https://api.github.com/search/issues?q=repo:${owner}/${repositoryName}+type:pr+created:${startDate}..${endDate}&merged:${startDate}..${endDate}&closed:${startDate}..${endDate}&updated:${startDate}..${endDate}`;
+  const url = `https://api.github.com/search/issues?q=repo:${owner}/${repositoryName}+type:pr+created:${startDate}..${endDate}`;
   let outputArray = [];
   axios
     .get(url)
@@ -32,3 +32,4 @@ function getPullRequests(owner, repositoryName, startDate, endDate) {
       throw new Error(errorMessage.notFound);
     });
 }
+

@@ -18,7 +18,6 @@
   },
   "homepage": "https://github.com/Umuzi-org/Keane-Small-186-consume-github-api-javascript#readme",
   "dependencies": {
-    "axios": "^0.27.2",
-    "node-fetch": "^3.2.10"
+    "axios": "^0.27.2"
   }
 }
