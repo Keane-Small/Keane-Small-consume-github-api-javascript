@@ -2,12 +2,12 @@ import axios from "axios";
 import { removeTime, errorMessage } from "./get_pull_request_helper.js";
 function getPullRequests(owner, repositoryName, startDate, endDate) {
   const url = `https://api.github.com/search/issues?q=repo:${owner}/${repositoryName}+type:pr+created:${startDate}..${endDate}`;
-  let outputArray = [];
+  const outputArray = [];
   axios
     .get(url)
     .then((response) => {
       for (let i in response.data.items) {
-        let filteredPullRequestData = (({
+        const filteredPullRequestData = (({
           id,
           user,
           title,
@@ -29,7 +29,10 @@ function getPullRequests(owner, repositoryName, startDate, endDate) {
       console.log(outputArray);
     })
     .catch((err) => {
-      throw new Error(errorMessage.notFound);
+      const errorData = err.response.data;
+      const errorCode = err.response.status;
+      throw new Error(`Error ${errorCode} ${errorData.errors[0].message}`);
     });
 }
 
+getPullRequests("Uuzi-org", "ACN-syllabus", "2022-03-01", "2022-03-10")
