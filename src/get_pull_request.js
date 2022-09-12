@@ -35,4 +35,3 @@ function getPullRequests(owner, repositoryName, startDate, endDate) {
     });
 }
 
-getPullRequests("Uuzi-org", "ACN-syllabus", "2022-03-01", "2022-03-10")
