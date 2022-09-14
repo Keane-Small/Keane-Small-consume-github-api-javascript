@@ -1,5 +1,5 @@
 import axios from "axios";
-import { removeTime } from "./get_pull_request_helper.js";
+import { removeTime, errorMessage } from "./get_pull_request_helper.js";
 function getPullRequests(owner, repositoryName, startDate, endDate) {
   const url = `https://api.github.com/search/issues?q=repo:${owner}/${repositoryName}+type:pr+created:${startDate}..${endDate}`;
   const outputArray = [];
@@ -31,7 +31,15 @@ function getPullRequests(owner, repositoryName, startDate, endDate) {
     .catch((err) => {
       const errorData = err.response.data;
       const errorCode = err.response.status;
-      throw new Error(`Error ${errorCode} ${errorData.errors[0].message}`);
+      if (errorCode === 422) {
+        throw new Error(errorMessage.noUserOrRepo);
+      } else {
+        throw new Error(`Error ${errorCode} ${errorData.errors[0].message}`);
+      }
     });
 }
 
+
+
+
+getPullRequests("Umuzi-org", "ACN-Syllabus", "2022-0-01", "2022-08-01")
