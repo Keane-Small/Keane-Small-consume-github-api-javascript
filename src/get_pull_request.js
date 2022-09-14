@@ -34,7 +34,7 @@ function getPullRequests(owner, repositoryName, startDate, endDate) {
       if (errorCode === 422) {
         throw new Error(errorMessage.noUserOrRepo);
       } else {
-        throw new Error(`Error ${errorCode} ${errorData.errors[0].message}`);
+        throw new Error(`${errorCode} ${errorData.errors[0].message}`);
       }
     });
 }
