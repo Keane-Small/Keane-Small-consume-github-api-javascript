@@ -1,5 +1,5 @@
 import axios from "axios";
-import { removeTime, errorMessage } from "./get_pull_request_helper.js";
+import { removeTime } from "./get_pull_request_helper.js";
 function getPullRequests(owner, repositoryName, startDate, endDate) {
   const url = `https://api.github.com/search/issues?q=repo:${owner}/${repositoryName}+type:pr+created:${startDate}..${endDate}`;
   const outputArray = [];
