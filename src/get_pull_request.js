@@ -29,17 +29,7 @@ function getPullRequests(owner, repositoryName, startDate, endDate) {
       console.log(outputArray);
     })
     .catch((err) => {
-      const errorData = err.response.data;
-      const errorCode = err.response.status;
-      if (errorCode === 422) {
-        throw new Error(errorMessage.noUserOrRepo);
-      } else {
-        throw new Error(`${errorCode} ${errorData.errors[0].message}`);
-      }
+        throw new Error(`${err.response.status} User or Respository ${err.response.statusText}`);
+      
     });
 }
-
-
-
-
-getPullRequests("Umuzi-org", "ACN-Syllabus", "2022-0-01", "2022-08-01")
