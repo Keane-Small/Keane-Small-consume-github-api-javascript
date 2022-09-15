@@ -29,7 +29,7 @@ function getPullRequests(owner, repositoryName, startDate, endDate) {
       console.log(outputArray);
     })
     .catch((err) => {
-        throw new Error(`${err.response.status} User or Respository ${err.response.statusText}`);
+        throw new Error(`${err.response.status} User or Repository ${err.response.statusText}`);
       
     });
 }
