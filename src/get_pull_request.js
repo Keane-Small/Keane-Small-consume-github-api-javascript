@@ -6,7 +6,7 @@ function getPullRequests(owner, repositoryName, startDate, endDate) {
   axios
     .get(url)
     .then((response) => {
-      for (let i in response.data.items) {
+      for (const pr in response.data.items) {
         const filteredPullRequestData = (({
           id,
           user,
@@ -19,7 +19,7 @@ function getPullRequests(owner, repositoryName, startDate, endDate) {
           title,
           state,
           created_at,
-        }))(response.data.items[i]);
+        }))(response.data.items[pr]);
         filteredPullRequestData.user = filteredPullRequestData.user.login;
         filteredPullRequestData.created_at = removeTime(
           filteredPullRequestData.created_at
@@ -29,7 +29,8 @@ function getPullRequests(owner, repositoryName, startDate, endDate) {
       console.log(outputArray);
     })
     .catch((err) => {
-        throw new Error(`${err.response.status} User or Repository ${err.response.statusText}`);
+        throw new Error(`${err.response.status} User or Repository ${err.response.data.message}`);
       
     });
 }
+
