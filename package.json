@@ -5,7 +5,7 @@
   "main": "get_pull_request.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jasmine"
   },
   "repository": {
     "type": "git",
@@ -21,6 +21,7 @@
     "axios": "^0.27.2"
   },
   "devDependencies": {
+    "axios-mock-adapter": "^1.22.0",
     "jasmine": "^5.1.0"
   }
 }
