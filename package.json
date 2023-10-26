@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "Consume Github API (186)\r For raw project instructions see: http://syllabus.africacode.net/projects/github-api-consume/",
   "main": "get_pull_request.js",
-  "type": "module",
   "scripts": {
     "test": "jasmine"
   },

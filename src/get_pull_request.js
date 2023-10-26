@@ -1,4 +1,4 @@
-import axios from "axios";
+const axios = require("axios");
 
 function removeTime(date) {
   return date.toISOString().slice(0, 10);
@@ -25,7 +25,6 @@ function getPullRequests(owner, repositoryName, startDate, endDate) {
   axios
     .get(url)
     .then((response) => {
-      console.log("hello");
       const allPullRequests = response.data.items;
       startDate = new Date(startDate);
       endDate = new Date(endDate);
@@ -60,6 +59,6 @@ function getPullRequests(owner, repositoryName, startDate, endDate) {
     });
 }
 
-getPullRequests("Umuzi-org", "ACN-syllabus", "2023-03-01", "2023-03-10");
+getPullRequests("Umuzi-org", "ACN-syllabus", "2023-10-01", "2023-10-20");
 
 // module.exports = { getPullRequests };
