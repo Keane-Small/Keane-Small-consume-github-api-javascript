@@ -17,7 +17,8 @@
   },
   "homepage": "https://github.com/Umuzi-org/Keane-Small-186-consume-github-api-javascript#readme",
   "dependencies": {
-    "axios": "^0.27.2"
+    "axios": "^0.27.2",
+    "console-spy": "^4.0.0"
   },
   "devDependencies": {
     "axios-mock-adapter": "^1.22.0",
