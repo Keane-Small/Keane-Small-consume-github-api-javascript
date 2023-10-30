@@ -51,6 +51,7 @@ function getPullRequests(owner, repositoryName, startDate, endDate) {
         }
       }
       console.log(outputArray);
+      return outputArray;
     })
     .catch((err) => {
       throw new Error(
