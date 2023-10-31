@@ -47,9 +47,14 @@ describe("getPullRequests", () => {
     );
   });
   it("should return the correct results from the api call", async () => {
-    await getPullRequests(owner, repositoryName, startDate, endDate);
+    const results = await getPullRequests(
+      owner,
+      repositoryName,
+      startDate,
+      endDate
+    );
 
-    expect(consoleSpy.log.calls[0].arguments[0]).toEqual([
+    expect(results).toEqual([
       {
         id: 1,
         user: { login: "user1" },
