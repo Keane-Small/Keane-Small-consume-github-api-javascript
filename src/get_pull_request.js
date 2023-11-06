@@ -21,45 +21,44 @@ function checkBetweenDates(item, startDate, endDate) {
 
 function getPullRequests(owner, repositoryName, startDate, endDate) {
   const url = `https://api.github.com/search/issues?q=repo:${owner}/${repositoryName}+type:pr;`;
+  const token = `${url}?token=${token}`;
   const outputArray = [];
-  return new Promise((resolve, reject) => {
-    axios
-      .get(url)
-      .then((response) => {
-        const allPullRequests = response.data.items;
-        startDate = new Date(startDate);
-        endDate = new Date(endDate);
-        for (const pr in allPullRequests) {
-          if (checkBetweenDates(allPullRequests[pr], startDate, endDate)) {
-            const filteredPullRequestData = (({
-              id,
-              user,
-              title,
-              state,
-              created_at,
-            }) => ({
-              id,
-              user,
-              title,
-              state,
-              created_at,
-            }))(allPullRequests[pr]);
-            filteredPullRequestData.user = filteredPullRequestData.user.login;
-            filteredPullRequestData.created_at = removeTime(
-              filteredPullRequestData.created_at
-            );
-            outputArray.push(filteredPullRequestData);
-          }
+  axios
+    .get(url)
+    .then((response) => {
+      const allPullRequests = response.data.items;
+      startDate = new Date(startDate);
+      endDate = new Date(endDate);
+      for (const pr in allPullRequests) {
+        if (checkBetweenDates(allPullRequests[pr], startDate, endDate)) {
+          const filteredPullRequestData = (({
+            id,
+            user,
+            title,
+            state,
+            created_at,
+          }) => ({
+            id,
+            user,
+            title,
+            state,
+            created_at,
+          }))(allPullRequests[pr]);
+          filteredPullRequestData.user = filteredPullRequestData.user.login;
+          filteredPullRequestData.created_at = removeTime(
+            filteredPullRequestData.created_at
+          );
+          outputArray.push(filteredPullRequestData);
         }
-        console.log(outputArray);
-        resolve(outputArray);
-      })
-      .catch((err) => {
-        reject(
-          `${err.response.status} User or Repository ${err.response.data.message}`
-        );
-      });
-  });
+      }
+      console.log(outputArray);
+      return outputArray;
+    })
+    .catch((err) => {
+      throw new Error(
+        `${err.response.status} User or Repository ${err.response.data.message}`
+      );
+    });
 }
 
 module.exports = { getPullRequests };
