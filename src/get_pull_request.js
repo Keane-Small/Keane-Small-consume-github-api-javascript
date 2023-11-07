@@ -21,7 +21,7 @@ function checkBetweenDates(item, startDate, endDate) {
 
 function getPullRequests(owner, repositoryName, startDate, endDate) {
   const url = `https://api.github.com/search/issues?q=repo:${owner}/${repositoryName}+type:pr;`;
-  const token = `${url}?token=${token}`;
+
   const outputArray = [];
   axios
     .get(url)
