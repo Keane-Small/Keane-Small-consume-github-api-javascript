@@ -21,6 +21,35 @@ function checkBetweenDates(item, startDate, endDate) {
   }
 }
 
+function filterData(data, startDate, endDate) {
+  startDate = new Date(startDate);
+  endDate = new Date(endDate);
+  const outputArray = [];
+  for (const pr in data) {
+    if (checkBetweenDates(data[pr], startDate, endDate)) {
+      const filteredPullRequestData = (({
+        id,
+        user,
+        title,
+        state,
+        created_at,
+      }) => ({
+        id,
+        user,
+        title,
+        state,
+        created_at,
+      }))(data[pr]);
+      filteredPullRequestData.user = filteredPullRequestData.user.login;
+      filteredPullRequestData.created_at = removeTime(
+        filteredPullRequestData.created_at
+      );
+      outputArray.push(filteredPullRequestData);
+    }
+  }
+  return outputArray;
+}
+
 async function getPullRequests(owner, repositoryName, startDate, endDate) {
   // const url = `https://api.github.com/search/issues?q=repo:${owner}/${repositoryName}+type:pr;`;
   const headers = {
@@ -28,7 +57,6 @@ async function getPullRequests(owner, repositoryName, startDate, endDate) {
     "Accept-Encoding": "gzip,deflate,compress",
   };
   const allPrs = [];
-  const outputArray = [];
   const perPage = 100;
   let page = 1;
   while (true) {
@@ -36,7 +64,6 @@ async function getPullRequests(owner, repositoryName, startDate, endDate) {
     const response = await axios
       .get(url, { headers })
       .then((response) => {
-        allPrs.push(response.data);
         return response.data;
       })
       .catch((err) => {
@@ -46,11 +73,12 @@ async function getPullRequests(owner, repositoryName, startDate, endDate) {
       });
     if (response.length === 0) {
       break;
+    } else {
+      allPrs.push(...response);
+      page++;
     }
-    page++;
   }
-
-  console.log(allPrs);
+  return filterData(allPrs, startDate, endDate);
 
   // while (true) {
   //   const url = `https://api.github.com/repos/${owner}/${repositoryName}/pulls?page=${page}&per_page=${perPage}&state=all`;
@@ -99,6 +127,25 @@ let repositoryName = "ACN-syllabus";
 let startDate = "2023-03-01";
 let endDate = "2023-03-10";
 
-const results = getPullRequests(owner, repositoryName, startDate, endDate);
+const results = getPullRequests(owner, repositoryName, startDate, endDate).then(
+  (response) => {
+    console.log(response);
+  }
+);
+
+console.log(results);
+
+// let array = [1, 2];
+// let num = [6, 4];
+// let arr1 = [];
+// let arr2 = [];
+
+// arr1.push(array);
+// arr1.push(num);
+// arr2.push(...array);
+// arr2.push(...num);
+
+// console.log(arr1);
+// console.log(arr2);
 
 module.exports = { getPullRequests };
