@@ -1,60 +1,46 @@
-const { getPullRequests } = require("../src/get_pull_request");
-const { axios } = require("axios");
-const nock = require("nock");
+const { getData, filterData } = require("../src/helper_functions");
+const axios = require("axios");
+const { rawData, modifiedData } = require("../src/mocked_data");
 
-axios.defaults.adapter = "https";
-
-describe("getPullRequests", () => {
-  let axiosGetSpy, owner, repositoryName, startDate, endDate;
-
+describe("ok", () => {
+  let owner, repositoryName, startDate, endDate, url, headers;
   beforeEach(() => {
-    owner = "testOwner";
-    repositoryName = "testRepo";
-    startDate = "2023-01-01";
-    endDate = "2023-11-01";
+    startDate = "2023-03-01";
+    endDate = "2023-03-10";
+    owner = "sjahgfkjgasf";
+    res = "oasfpijaskf";
+    url = `https://api.github.com/repos/${owner}/${repositoryName}/pulls?page=1&per_page=100&state=all`;
+  });
+  it("should check if the url was called once", async () => {
+    headers = {
+      Authorization: "token undefined",
+      "Accept-Encoding": "gzip,deflate,compress",
+    };
+    spyOn(axios, "get");
+    await getData(url, headers);
+    expect(axios.get).toHaveBeenCalledOnceWith(url);
+  });
 
-    axiosGetSpy = spyOn(axios, "get").and.returnValue(
-      Promise.resolve({ data: [] })
+  it("should check if the url and header was called once", async () => {
+    spyOn(axios, "get");
+    headers = {
+      Authorization: "token sadasda",
+      "Accept-Encoding": "gzip,deflate,compress",
+    };
+    await getData(url, headers);
+    expect(axios.get).toHaveBeenCalledOnceWith(url, { headers });
+  });
+
+  it("should return data when making api call", async () => {
+    spyOn(axios, "get").and.returnValue(
+      Promise.resolve(["asjhfjka", "jahsjfda"])
     );
-
-    nock("https://api.github.com")
-      .get(`/repos/${owner}/${repositoryName}/pulls`)
-      .query({
-        page: 1,
-        per_page: 100,
-        state: "all",
-      })
-      .reply(200, (results = [["ok"]]));
+    await getData(url, headers).then((response) => {
+      expect(response).toEqual(["asjhfjka", "jahsjfda"]);
+    });
   });
-
-  afterEach(() => {
-    axiosGetSpy.calls.reset();
-    nock.cleanAll();
-  });
-  it("should make an API call with the correct URL and headers", async () => {
-    await getPullRequests(owner, repositoryName, startDate, endDate);
-    expect(axios.get).toHaveBeenCalledWith(
-      `https://api.github.com/repos/${owner}/${repositoryName}/pulls?page=1&per_page=100&state=all`,
-      {
-        headers: {
-          Authorization: jasmine.stringMatching(/^token .+$/),
-          "Accept-Encoding": "gzip,deflate,compress",
-        },
-      }
-    );
-  });
-
-  it("should make the API call only once", async () => {
-    await getPullRequests(owner, repositoryName, startDate, endDate);
-    expect(axios.get).toHaveBeenCalledTimes(1);
-  });
-
-  it("should process data of a specific format correctly", async () => {
-    const testData = [{ title: "PR 1" }, { title: "PR 2" }];
-    await getPullRequests(owner, repositoryName, startDate, endDate).then(
-      (response) => {
-        expect(response).toEqual([{ title: "PR 1" }, { title: "PR 2" }]);
-      }
-    );
+  it("should return the filtered data", async () => {
+    const results = filterData(rawData, startDate, endDate);
+    expect(results).toEqual(modifiedData);
   });
 });

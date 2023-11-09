@@ -1,3 +1,4 @@
+const axios = require("axios");
 function removeTime(date) {
   return date.toISOString().slice(0, 10);
 }
@@ -21,29 +22,41 @@ function filterData(data, startDate, endDate) {
   startDate = new Date(startDate);
   endDate = new Date(endDate);
   const outputArray = [];
-  for (const pr in data) {
-    if (checkBetweenDates(data[pr], startDate, endDate)) {
-      const filteredPullRequestData = (({
-        id,
-        user,
-        title,
-        state,
-        created_at,
-      }) => ({
-        id,
-        user,
-        title,
-        state,
-        created_at,
-      }))(data[pr]);
-      filteredPullRequestData.user = filteredPullRequestData.user.login;
-      filteredPullRequestData.created_at = removeTime(
-        filteredPullRequestData.created_at
-      );
-      outputArray.push(filteredPullRequestData);
+  for (let i = 0; i <= data.length; i++) {
+    let newData = data[i];
+    for (const pr in newData) {
+      if (checkBetweenDates(newData[pr], startDate, endDate)) {
+        const filteredPullRequestData = (({
+          id,
+          user,
+          title,
+          state,
+          created_at,
+        }) => ({
+          id,
+          user,
+          title,
+          state,
+          created_at,
+        }))(newData[pr]);
+        filteredPullRequestData.user = filteredPullRequestData.user.login;
+        filteredPullRequestData.created_at = removeTime(
+          filteredPullRequestData.created_at
+        );
+        outputArray.push(filteredPullRequestData);
+      }
     }
   }
   return outputArray;
 }
+async function getData(url, headers) {
+  let response;
+  if (headers.Authorization !== `token undefined`) {
+    response = await axios.get(url, { headers });
+  } else {
+    response = await axios.get(url);
+  }
+  return response;
+}
 
-module.exports = { filterData };
+module.exports = { filterData, getData };
