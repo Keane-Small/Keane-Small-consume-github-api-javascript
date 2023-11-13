@@ -23,7 +23,7 @@ function filterData(data, startDate, endDate) {
   endDate = new Date(endDate);
   const outputArray = [];
   for (let i = 0; i <= data.length; i++) {
-    const newData = data[i];
+    let newData = data[i];
     for (const pr in newData) {
       if (checkBetweenDates(newData[pr], startDate, endDate)) {
         const filteredPullRequestData = (({
