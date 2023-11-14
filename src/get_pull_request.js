@@ -12,12 +12,12 @@ async function getPullRequests(owner, repositoryName, startDate, endDate) {
   let page = 1;
   while (true) {
     const url = `https://api.github.com/repos/${owner}/${repositoryName}/pulls?page=${page}&per_page=${perPage}&state=all`;
-    const response = await getData(url, headers);
-    const result = await response.data;
+    const response = await getData(url, { headers });
+    const result = response.data;
     if (result.length === 0) {
       break;
     } else {
-      allPrs.push(response);
+      allPrs.push(...response.data);
       page++;
     }
   }
