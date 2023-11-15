@@ -1,5 +1,4 @@
-const { getData, filterData } = require("../src/helper_functions");
-const { getPullRequests } = require("../src/get_pull_request");
+const { getPullRequests } = require("../src/consume_github_api");
 const axios = require("axios");
 const { rawData, modifiedData } = require("../src/mocked_data");
 const MockAdapter = require("axios-mock-adapter");
