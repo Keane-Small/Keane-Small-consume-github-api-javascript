@@ -1,9 +1,8 @@
 const { getPullRequests } = require("../src/consume_github_api");
 const axios = require("axios");
 const { rawData, modifiedData } = require("../src/mocked_data");
-const MockAdapter = require("axios-mock-adapter");
 
-describe("getPullRequests", () => {
+describe("consumeGithubApi", () => {
   let owner, repositoryName, startDate, endDate, url, axiosSpy;
   beforeEach(() => {
     axiosSpy = spyOn(axios, "get");

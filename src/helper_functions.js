@@ -6,9 +6,6 @@ function removeTime(date) {
 function checkBetweenDates(item, startDate, endDate) {
   if (item !== undefined) {
     const pullRequest = item;
-    // console.log(pullRequest);
-    // console.log(pullRequest.created_at);
-    // console.log(Object.keys(pullRequest));
     pullRequest.created_at = new Date(pullRequest.created_at);
     pullRequest.updated_at = new Date(pullRequest.updated_at);
     if (
@@ -16,7 +13,6 @@ function checkBetweenDates(item, startDate, endDate) {
         pullRequest.created_at <= endDate) ||
       (pullRequest.updated_at >= startDate && pullRequest.updated_at <= endDate)
     ) {
-      console.log("OK");
       return true;
     } else {
       return false;
