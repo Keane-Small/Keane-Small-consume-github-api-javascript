@@ -49,6 +49,7 @@ function filterData(data, startDate, endDate) {
   }
   return outputArray;
 }
+
 async function getData(url, headers) {
   let response;
   if (headers.Authorization !== `token undefined`) {
@@ -59,4 +60,17 @@ async function getData(url, headers) {
   return response;
 }
 
-module.exports = { filterData, getData };
+function errorHandling(err, owner, repository) {
+  if (err.response.status === 404) {
+    throw new Error(`The repository ${owner}/${repository} were not found`);
+  }
+  if (err.response.status === 403) {
+    throw new Error("Your API rate limit has exceeded");
+  }
+}
+
+module.exports = {
+  filterData,
+  getData,
+  errorHandling,
+};

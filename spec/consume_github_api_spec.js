@@ -3,11 +3,11 @@ const axios = require("axios");
 const { rawData, modifiedData } = require("../src/mocked_data");
 
 describe("consumeGithubApi", () => {
-  let owner, repositoryName, startDate, endDate, url, axiosSpy;
+  let axiosSpy;
   beforeEach(() => {
     axiosSpy = spyOn(axios, "get");
   });
-  it("should get called with correct url", () => {
+  it("should get called with correct url", async () => {
     const headers = {
       headers: {
         Authorization: `token ${process.env.GITHUB_TOKEN}`,
@@ -15,7 +15,12 @@ describe("consumeGithubApi", () => {
       },
     };
 
-    getPullRequests("Umuzi-org", "ACN-syllabus", "2022-03-01", "2022-03-10");
+    getPullRequests({
+      owner: "Umuzi-org",
+      repositoryName: "ACN-syllabus",
+      startDate: "2023-03-01",
+      endDate: "2023-03-10",
+    });
 
     expect(axios.get).toHaveBeenCalledTimes(1);
     expect(axios.get).toHaveBeenCalledWith(
@@ -30,12 +35,12 @@ describe("consumeGithubApi", () => {
       Promise.resolve({ data: [] })
     );
 
-    await getPullRequests(
-      "Umuzi-org",
-      "ACN-syllabus",
-      "2023-03-01",
-      "2023-03-10"
-    ).then((response) => {
+    await getPullRequests({
+      owner: "Umuzi-org",
+      repositoryName: "ACN-syllabus",
+      startDate: "2023-03-01",
+      endDate: "2023-03-10",
+    }).then((response) => {
       expect(response).toEqual(modifiedData);
     });
   });
