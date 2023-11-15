@@ -2,7 +2,7 @@ const path = require("path");
 require("dotenv").config({ path: path.resolve(__dirname, "../.env") });
 const { filterData, getData } = require("./helper_functions");
 
-async function getPullRequests({ owner, repositoryName, startDate, endDate }) {
+async function getPullRequests(owner, repositoryName, startDate, endDate) {
   const headers = {
     Authorization: `token ${process.env.GITHUB_TOKEN}`,
     "Accept-Encoding": "gzip,deflate,compress",

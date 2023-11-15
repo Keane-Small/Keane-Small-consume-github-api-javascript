@@ -5,50 +5,38 @@ const { rawData, modifiedData } = require("../src/mocked_data");
 const MockAdapter = require("axios-mock-adapter");
 
 describe("getPullRequests", () => {
-  let owner, repositoryName, startDate, endDate, url, headers;
+  let owner, repositoryName, startDate, endDate, url, axiosSpy;
   beforeEach(() => {
-    startDate = "2023-03-01";
-    endDate = "2023-03-10";
-    owner = "sjahgfkjgasf";
-    repositoryName = "oasfpijaskf";
-    url = `https://api.github.com/repos/${owner}/${repositoryName}/pulls?page=1&per_page=100&state=all`;
-    const mock = new MockAdapter(axios);
-    mock.onGet(url).reply(200, ["success"]);
+    axiosSpy = spyOn(axios, "get");
   });
-  it("should check if the url was called once", async () => {
-    headers = {
-      Authorization: "token undefined",
-      "Accept-Encoding": "gzip,deflate,compress",
+  it("should get called with correct url", () => {
+    const headers = {
+      headers: {
+        Authorization: `token ${process.env.GITHUB_TOKEN}`,
+        "Accept-Encoding": "gzip,deflate,compress",
+      },
     };
-    spyOn(axios, "get");
-    await getData(url, headers);
-    expect(axios.get).toHaveBeenCalledOnceWith(url);
-  });
 
-  it("should check if the url and header was called once", async () => {
-    spyOn(axios, "get");
-    headers = {
-      Authorization: "token sadasda",
-      "Accept-Encoding": "gzip,deflate,compress",
-    };
-    await getData(url, headers);
-    expect(axios.get).toHaveBeenCalledOnceWith(url, { headers });
-  });
+    getPullRequests("Umuzi-org", "ACN-syllabus", "2022-03-01", "2022-03-10");
 
+    expect(axios.get).toHaveBeenCalledTimes(1);
+    expect(axios.get).toHaveBeenCalledWith(
+      `https://api.github.com/repos/Umuzi-org/ACN-syllabus/pulls?page=1&per_page=100&state=all`,
+      { headers }
+    );
+  });
   it("should return the filtered data", async () => {
-    const axiosSpy = spyOn(axios, "get");
     axiosSpy.and.returnValues(
-      Promise.resolve({ data: rawData[0] }), // First page
-      // Promise.resolve({ data: rawData[1] }), // Second page
-      // Promise.resolve({ data: rawData[2] }), // Third page
-      Promise.resolve({ data: [] }) // Empty response to end the loop
+      Promise.resolve({ data: rawData[0] }),
+      Promise.resolve({ data: rawData[1] }),
+      Promise.resolve({ data: [] })
     );
 
     await getPullRequests(
       "Umuzi-org",
       "ACN-syllabus",
-      "2022-03-01",
-      "2022-03-10"
+      "2023-03-01",
+      "2023-03-10"
     ).then((response) => {
       expect(response).toEqual(modifiedData);
     });
