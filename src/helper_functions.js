@@ -83,6 +83,8 @@ async function errorHandling(err, owner, repository) {
   await checkForRepository(owner, repository);
   if (err.response.status === 403) {
     throw new Error("Your API rate limit has exceeded");
+  } else {
+    throw err;
   }
 }
 
