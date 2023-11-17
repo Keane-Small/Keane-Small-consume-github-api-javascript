@@ -8,6 +8,7 @@ function checkBetweenDates(item, startDate, endDate) {
     const pullRequest = item;
     pullRequest.created_at = new Date(pullRequest.created_at);
     pullRequest.updated_at = new Date(pullRequest.updated_at);
+
     if (
       (pullRequest.created_at >= startDate &&
         pullRequest.created_at <= endDate) ||
@@ -23,6 +24,7 @@ function checkBetweenDates(item, startDate, endDate) {
 function filterData(data, startDate, endDate) {
   startDate = new Date(startDate);
   endDate = new Date(endDate);
+  endDate.setUTCHours(23, 59, 59, 999);
   const outputArray = [];
   for (let i = 0; i <= data.length; i++) {
     let newData = data[i];

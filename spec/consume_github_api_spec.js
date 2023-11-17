@@ -17,7 +17,7 @@ describe("consumeGithubApi", () => {
 
     getPullRequests({
       owner: "Umuzi-org",
-      repositoryName: "ACN-syllabus",
+      repo: "ACN-syllabus",
       startDate: "2023-03-01",
       endDate: "2023-03-10",
     });
@@ -37,7 +37,7 @@ describe("consumeGithubApi", () => {
 
     await getPullRequests({
       owner: "Umuzi-org",
-      repositoryName: "ACN-syllabus",
+      repo: "ACN-syllabus",
       startDate: "2023-03-01",
       endDate: "2023-03-10",
     }).then((response) => {
