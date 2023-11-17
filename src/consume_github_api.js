@@ -23,7 +23,7 @@ async function getPullRequests({ owner, repo, startDate, endDate }) {
       }
     }
   } catch (err) {
-    errorHandling(err, owner, re);
+    errorHandling(err, owner, repo);
   }
   return filterData(allPrs, startDate, endDate);
 }
