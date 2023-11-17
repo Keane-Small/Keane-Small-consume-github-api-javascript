@@ -28,12 +28,4 @@ async function getPullRequests({ owner, repo, startDate, endDate }) {
   return filterData(allPrs, startDate, endDate);
 }
 
-getPullRequests({
-  owner: "Umuzi-org",
-  repo: "ACN-syllabus",
-  startDate: "2022-03-01",
-  endDate: "2022-03-10",
-}).then((response) => {
-  console.log(response);
-});
 module.exports = { getPullRequests };
