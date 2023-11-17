@@ -2,7 +2,7 @@ const path = require("path");
 require("dotenv").config({ path: path.resolve(__dirname, "../.env") });
 const { filterData, getData, errorHandling } = require("./helper_functions");
 
-async function getPullRequests({ owner, repositoryName, startDate, endDate }) {
+async function getPullRequests({ owner, repo, startDate, endDate }) {
   const headers = {
     Authorization: `token ${process.env.GITHUB_TOKEN}`,
     "Accept-Encoding": "gzip,deflate,compress",
@@ -12,7 +12,7 @@ async function getPullRequests({ owner, repositoryName, startDate, endDate }) {
   let page = 1;
   try {
     while (true) {
-      const url = `https://api.github.com/repos/${owner}/${repositoryName}/pulls?page=${page}&per_page=${perPage}&state=all`;
+      const url = `https://api.github.com/repos/${owner}/${repo}/pulls?page=${page}&per_page=${perPage}&state=all`;
       const response = await getData(url, { headers });
       const result = response.data;
       if (result.length === 0) {
@@ -23,7 +23,7 @@ async function getPullRequests({ owner, repositoryName, startDate, endDate }) {
       }
     }
   } catch (err) {
-    errorHandling(err, owner, repositoryName);
+    errorHandling(err, owner, re);
   }
   return filterData(allPrs, startDate, endDate);
 }
