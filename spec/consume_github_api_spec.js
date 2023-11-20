@@ -30,8 +30,7 @@ describe("consumeGithubApi", () => {
   });
   it("should return the filtered data", async () => {
     axiosSpy.and.returnValues(
-      Promise.resolve({ data: rawData[0] }),
-      Promise.resolve({ data: rawData[1] }),
+      Promise.resolve({ data: rawData }),
       Promise.resolve({ data: [] })
     );
 
