@@ -2,7 +2,7 @@
   "name": "keane-small-186-consume-github-api-javascript",
   "version": "1.0.0",
   "description": "Consume Github API (186)\r For raw project instructions see: http://syllabus.africacode.net/projects/github-api-consume/",
-  "main": "get_pull_request.js",
+  "main": "src/consume_github_api.js",
   "scripts": {
     "test": "jasmine"
   },
@@ -18,9 +18,7 @@
   "homepage": "https://github.com/Umuzi-org/Keane-Small-186-consume-github-api-javascript#readme",
   "dependencies": {
     "axios": "^0.27.2",
-    "console-spy": "^4.0.0",
-    "dotenv": "^16.3.1",
-    "nock": "^13.3.8"
+    "dotenv": "^16.3.1"
   },
   "devDependencies": {
     "axios-mock-adapter": "^1.22.0",
