@@ -52,6 +52,22 @@ function filterData(data, startDate, endDate) {
   return outputArray;
 }
 
+async function checkForOwner(owner, header) {
+  try {
+    await axios.head(`https://api.github.com/users/${owner}`, { header });
+  } catch (err) {
+    throw new Error(`The owner ${owner} does not exist`);
+  }
+}
+
+async function checkForRepository(owner, repo) {
+  try {
+    await axios.head(`https://api.github.com/repos/${owner}/${repo}`);
+  } catch (err) {
+    throw new Error(`The repository ${repo} does not exist`);
+  }
+}
+
 async function getData(url, headers) {
   let response;
   if (headers.Authorization !== `token undefined`) {
@@ -62,26 +78,9 @@ async function getData(url, headers) {
   return response;
 }
 
-async function checkForOwner(owner) {
-  try {
-    await axios.get(`https://api.github.com/users/${owner}`);
-  } catch (err) {
-    throw new Error(`The owner ${owner} does not exist`);
-  }
-}
-
-async function checkForRepository(owner, repo) {
-  try {
-    await axios.get(`https://api.github.com/users/${owner}/${repo}`);
-  } catch (err) {
-    throw new Error(`The repository ${repo} does not exist`);
-  }
-}
-
-async function errorHandling(err, owner, repository) {
-  await checkForOwner(owner);
-  await checkForRepository(owner, repository);
-  if (err.response.status === 403) {
+async function errorHandling(err) {
+  console.log(err);
+  if (err.response && err.response.status === 403) {
     throw new Error("Your API rate limit has exceeded");
   } else {
     throw err;
@@ -92,4 +91,6 @@ module.exports = {
   filterData,
   getData,
   errorHandling,
+  checkForOwner,
+  checkForRepository,
 };
