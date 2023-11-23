@@ -58,18 +58,13 @@ async function checkForOwner(owner, repo, header) {
   } catch (err) {
     throw new Error(`The owner ${owner} does not exist`);
   }
-  try {
-    await axios.head(`https://api.github.com/repos/${owner}/${repo}`);
-  } catch (err) {
-    throw new Error(`The repository ${repo} does not exist`);
-  }
-
-  console.log("done");
 }
 
-async function checkForRepository(owner, repo) {
+async function checkForRepository(owner, repo, header) {
   try {
-    await axios.head(`https://api.github.com/repos/${owner}/${repo}`);
+    await axios.head(`https://api.github.com/repos/${owner}/${repo}`, {
+      header,
+    });
   } catch (err) {
     throw new Error(`The repository ${repo} does not exist`);
   }

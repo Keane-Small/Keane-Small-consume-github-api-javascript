@@ -12,6 +12,7 @@ async function getPullRequests({ owner, repo, startDate, endDate }) {
     "Accept-Encoding": "gzip,deflate,compress",
   };
   await checkForOwner(owner, repo, headers);
+  await checkForRepository(owner, repo, headers);
   const allPrs = [];
   const perPage = 100;
   let page = 1;
