@@ -52,7 +52,7 @@ function filterData(data, startDate, endDate) {
   return outputArray;
 }
 
-async function checkForOwner(owner, repo, header) {
+async function checkForOwner(owner, header) {
   try {
     await axios.head(`https://api.github.com/users/${owner}`, { header });
   } catch (err) {
