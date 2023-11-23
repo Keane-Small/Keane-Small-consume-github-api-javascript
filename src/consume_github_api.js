@@ -11,8 +11,7 @@ async function getPullRequests({ owner, repo, startDate, endDate }) {
     Authorization: `token ${process.env.GITHUB_TOKEN}`,
     "Accept-Encoding": "gzip,deflate,compress",
   };
-  await checkForOwner(owner, headers);
-  await checkForRepository(owner, repo, headers);
+  await checkForOwner(owner, repo, headers);
   const allPrs = [];
   const perPage = 100;
   let page = 1;
@@ -31,7 +30,6 @@ async function getPullRequests({ owner, repo, startDate, endDate }) {
   } catch (err) {
     errorHandling(err);
   }
-
   return allPrs.length > 0 ? filterData(allPrs, startDate, endDate) : null;
 }
 

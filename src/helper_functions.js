@@ -52,12 +52,19 @@ function filterData(data, startDate, endDate) {
   return outputArray;
 }
 
-async function checkForOwner(owner, header) {
+async function checkForOwner(owner, repo, header) {
   try {
     await axios.head(`https://api.github.com/users/${owner}`, { header });
   } catch (err) {
     throw new Error(`The owner ${owner} does not exist`);
   }
+  try {
+    await axios.head(`https://api.github.com/repos/${owner}/${repo}`);
+  } catch (err) {
+    throw new Error(`The repository ${repo} does not exist`);
+  }
+
+  console.log("done");
 }
 
 async function checkForRepository(owner, repo) {
@@ -79,7 +86,6 @@ async function getData(url, headers) {
 }
 
 async function errorHandling(err) {
-  console.log(err);
   if (err.response && err.response.status === 403) {
     throw new Error("Your API rate limit has exceeded");
   } else {
