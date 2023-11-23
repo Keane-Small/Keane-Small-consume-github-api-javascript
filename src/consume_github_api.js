@@ -19,7 +19,7 @@ async function getPullRequests({ owner, repo, startDate, endDate }) {
   try {
     while (true) {
       const url = `https://api.github.com/repos/${owner}/${repo}/pulls?page=${page}&per_page=${perPage}&state=all`;
-      const response = await getData(url, { headers }, owner, repo);
+      const response = await getData(url, { headers });
       const result = response.data;
       if (result.length === 0) {
         break;
