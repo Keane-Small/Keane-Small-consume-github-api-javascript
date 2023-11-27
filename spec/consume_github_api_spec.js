@@ -31,15 +31,12 @@ describe("consumeGithubApi", () => {
 
     expect(axiosGetSpy).toHaveBeenCalledOnceWith(
       "https://api.github.com/repos/Umuzi-org/ACN-syllabus/pulls?page=1&per_page=100&state=all",
-      { headers }
+      headers
     );
   });
 
   it("should return the filtered data", async () => {
-    axiosGetSpy.and.returnValues(
-      Promise.resolve({ data: rawData }),
-      Promise.resolve({ data: [] })
-    );
+    axiosGetSpy.and.returnValues(Promise.resolve(rawData));
 
     const response = await getPullRequests({
       owner: "Umuzi-org",
