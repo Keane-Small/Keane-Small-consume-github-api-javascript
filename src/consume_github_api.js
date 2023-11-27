@@ -5,7 +5,7 @@ const {
   checkForOwner,
   checkForRepository,
 } = require("./helper_functions");
-
+require("dotenv").config();
 
 async function getPullRequests({ owner, repo, startDate, endDate }) {
   const headers = {
