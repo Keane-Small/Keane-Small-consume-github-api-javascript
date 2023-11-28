@@ -38,7 +38,6 @@ describe("getPullRequests function", () => {
 
   it("should return the filtered data", async () => {
     axiosGetSpy.and.returnValues(Promise.resolve(rawData));
-
     const response = await getPullRequests(prData);
     expect(response).toEqual(modifiedData);
   });
