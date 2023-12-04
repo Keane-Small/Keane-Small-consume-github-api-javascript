@@ -14,32 +14,25 @@ async function getPullRequests({ owner, repo, startDate, endDate }) {
   };
   await checkForOwner(owner, headers);
   await checkForRepository(owner, repo, headers);
-  const allPrs = [];
   const perPage = 100;
   let page = 1;
   try {
-    async function getPrs() {
-      const url = `https://api.github.com/repos/${owner}/${repo}/pulls?page=${page}&per_page=${perPage}&state=all`;
-      const response = await getData(url, headers);
-      allPrs.push(...response.data);
-      page++;
-      return response;
-    }
-
-    async function nextPage() {
-      const response = await getPrs();
-      if (
-        response.headers.link &&
-        response.headers.link.includes('rel="next"')
-      ) {
-        return nextPage();
-      }
-    }
-
-    await nextPage();
+    const allPrs = await getPrs(owner, repo, page, perPage, headers);
     return allPrs.length > 0 ? filterData(allPrs, startDate, endDate) : null;
   } catch (err) {
     errorHandling(err);
+  }
+}
+
+async function getPrs(owner, repo, page, perPage, headers, prs = []) {
+  const url = `https://api.github.com/repos/${owner}/${repo}/pulls?page=${page}&per_page=${perPage}&state=all`;
+  const response = await getData(url, headers);
+  prs.push(...response.data);
+  if (response.headers.link && response.headers.link.includes('rel="next"')) {
+    page++;
+    return await getPrs(owner, repo, page, perPage, headers, prs);
+  } else {
+    return prs;
   }
 }
 
