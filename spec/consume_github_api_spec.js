@@ -7,7 +7,7 @@ describe("getPullRequests function", () => {
   beforeEach(() => {
     axiosGetSpy = spyOn(axios, "get");
     axiosHeadSpy = spyOn(axios, "head").and.returnValue(Promise.resolve({}));
-    process.env.GITHUB_TOKEN = "randomTests";
+    process.env.GITHUB_TOKEN = "my-fake-api-token";
     prData = {
       owner: "Umuzi-org",
       repo: "ACN-syllabus",
