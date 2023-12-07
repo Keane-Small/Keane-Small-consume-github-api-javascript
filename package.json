@@ -21,7 +21,6 @@
     "dotenv": "^16.3.1"
   },
   "devDependencies": {
-    "axios-mock-adapter": "^1.22.0",
     "jasmine": "^5.1.0"
   }
 }
